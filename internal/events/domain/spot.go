@@ -46,6 +46,15 @@ func NewSpot(event *Event, name string) (*Spot, error) {
 	return spot, nil
 }
 
+func (s *Spot) Reserve(ticketID string) error {
+	if s.Status == SpotStatusSold {
+		return ErrSpotAlreadyReserved
+	}
+	s.Status = SpotStatusSold
+	s.TicketID = ticketID
+	return nil
+}
+
 func (s Spot) Validate() error {
 	if s.Name == "" {
 		return ErrSpotNameRequired
