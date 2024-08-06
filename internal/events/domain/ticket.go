@@ -14,3 +14,7 @@ type Ticket struct {
 	TicketType TicketType
 	Price      float64
 }
+
+func IsValidTicketType(ticketType TicketType) bool {
+	return ticketType == TicketTypeHalf || ticketType == TicketTypeFull
+}
