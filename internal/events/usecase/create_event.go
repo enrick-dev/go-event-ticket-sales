@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"time"
+
+	"github.com/enrick-dev/go-event-ticket-sales.git/internal/events/domain"
 )
 
 // CreateEventInputDTO represents the input data required to create an event.
