@@ -22,22 +22,23 @@ type Partner2ReservationResponse struct {
 	Email        string `json:"email"`
 	Lugar        string `json:"lugar"`
 	TipoIngresso string `json:"tipo_ingresso"`
-	Status       string `json:"status"`
-	EventID      string `json:"event_id"`
+	Status       string `json:"estado"`
+	EventID      string `json:"evento_id"`
 }
 
 func (p *Partner2) MakeReservation(req *ReservationRequest) ([]ReservationResponse, error) {
 	partnerReq := Partner2ReservationRequest{
 		Lugares:      req.Spots,
-		TipoIngresso: req.TicketKind,
+		TipoIngresso: req.TicketType,
 		Email:        req.Email,
 	}
+
 	body, err := json.Marshal(partnerReq)
 	if err != nil {
 		return nil, err
 	}
 
-	url := fmt.Sprintf("%s/eventos/%s/reserva", p.BaseURL, req.EventID)
+	url := fmt.Sprintf("%s/eventos/%s/reservar", p.BaseURL, req.EventID)
 	httpReq, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
@@ -52,7 +53,7 @@ func (p *Partner2) MakeReservation(req *ReservationRequest) ([]ReservationRespon
 	defer httpResp.Body.Close()
 
 	if httpResp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("unexpected status code: %d", httpResp.StatusCode)
+		return nil, fmt.Errorf("reservation failed with status code: %d", httpResp.StatusCode)
 	}
 
 	var partnerResp []Partner2ReservationResponse
@@ -68,5 +69,6 @@ func (p *Partner2) MakeReservation(req *ReservationRequest) ([]ReservationRespon
 			Status: r.Status,
 		}
 	}
+
 	return responses, nil
 }
