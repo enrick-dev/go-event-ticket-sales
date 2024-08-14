@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/enrick-dev/go-event-ticket-sales.git/internal/events/domain"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type mysqlEventRepository struct {
